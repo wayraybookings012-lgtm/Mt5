@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0,
+maximum-scale=1.0,user-scalable=no">
+
+<title>VaultMarkets Trading</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:-apple-system,BlinkMacSystemFont,
+    "Segoe UI",Roboto,Arial,sans-serif;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#fff;
+    color:#111;
+}
+
+body{
+    display:flex;
+    flex-direction:column;
+}
+
+/* HEADER */
+
+.header{
+    height:58px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 8px;
+    background:#fff;
+    border-bottom:1px solid #e8e8e8;
+    z-index:50;
+}
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.menu-button{
+    width:35px;
+    height:35px;
+    border:0;
+    background:none;
+    font-size:23px;
+    cursor:pointer;
+}
+
+.title{
+    font-size:18px;
+    font-weight:500;
+}
+
+.top-tools{
+    display:flex;
+    align-items:center;
+    gap:3px;
+}
+
+.icon-btn{
+    width:35px;
+    height:35px;
+    border:0;
+    background:transparent;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:4px;
+    cursor:pointer;
+}
+
+.icon-btn img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+}
+
+.time-btn{
+    width:38px;
+    height:32px;
+    border:0;
+    background:#f1f3f5;
+    border-radius:5px;
+    font-size:12px;
+    font-weight:600;
+}
+
+/* CHART */
+
+.chart-area{
+    position:relative;
+    flex:1;
+    min-height:0;
+    background:#fff;
+    overflow:hidden;
+}
+
+#chartCanvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+}
+
+.chart-label{
+    position:absolute;
+    top:9px;
+    left:10px;
+    z-index:5;
+    pointer-events:none;
+}
+
+.chart-symbol{
+    font-size:14px;
+    font-weight:600;
+}
+
+.chart-time{
+    font-size:11px;
+    color:#777;
+    margin-top:2px;
+}
+
+/* ORDER CONTROLS */
+
+.order-controls{
+    position:absolute;
+    top:10px;
+    left:50%;
+    transform:translateX(-50%);
+    display:none;
+    align-items:center;
+    gap:4px;
+    z-index:15;
+    background:rgba(255,255,255,.94);
+    padding:4px;
+    border-radius:6px;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+
+.order-controls.active{
+    display:flex;
+}
+
+.order-button{
+    height:34px;
+    border:0;
+    color:#fff;
+    border-radius:4px;
+    padding:0 10px;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.sell{
+    background:#e53935;
+}
+
+.buy{
+    background:#1976d2;
+}
+
+.volume-select{
+    height:34px;
+    border:1px solid #ddd;
+    border-radius:4px;
+    background:#fff;
+    padding:0 5px;
+    font-size:11px;
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+    height:68px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+    border-top:1px solid #e5e5e5;
+    background:#fff;
+    z-index:50;
+}
+
+.nav-item{
+    flex:1;
+    height:60px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:#444;
+    font-size:10px;
+    gap:3px;
+}
+
+.nav-item i{
+    font-size:19px;
+}
+
+.nav-item.active{
+    color:#1976d2;
+}
+
+.balance-pill{
+    background:#f0f0f0;
+    padding:3px 8px;
+    border-radius:10px;
+    font-size:10px;
+    font-weight:600;
+}
+
+/* DROPDOWN */
+
+.dropdown{
+    position:absolute;
+    top:53px;
+    left:7px;
+    width:230px;
+    background:#fff;
+    border-radius:7px;
+    box-shadow:0 4px 18px rgba(0,0,0,.2);
+    display:none;
+    z-index:100;
+    overflow:hidden;
+}
+
+.dropdown.active{
+    display:block;
+}
+
+.dropdown div{
+    padding:14px 16px;
+    border-bottom:1px solid #eee;
+    font-size:14px;
+    cursor:pointer;
+}
+
+.dropdown div:hover{
+    background:#f5f5f5;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header class="header">
+
+    <div class="header-left">
+
+        <button class="menu-button"
+                onclick="toggleMenu()">
+            ☰
+        </button>
+
+        <div class="title">
+            VaultMarkets
+        </div>
+
+    </div>
+
+    <div class="top-tools">
+
+        <button class="icon-btn"
+                onclick="addTrade()">
+            <img src="1.png" alt="Add trade">
+        </button>
+
+        <button class="icon-btn"
+                onclick="openChartTools()">
+            <img src="2.png" alt="Chart tools">
+        </button>
+
+        <button class="time-btn"
+                onclick="changeTimeframe()">
+            H4
+        </button>
+
+        <button class="icon-btn"
+                onclick="openChartSettings()">
+            <img src="3.png" alt="Chart settings">
+        </button>
+
+        <button class="icon-btn"
+                onclick="openTradeTools()">
+            <img src="4.png" alt="Trade tools">
+        </button>
+
+        <!-- 5.png OPENS BUY / SELL -->
+        <button class="icon-btn"
+                onclick="openMoreTools()">
+            <img src="5.png" alt="Buy and sell">
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- DROPDOWN -->
+
+<div class="dropdown" id="dropdown">
+
+    <div onclick="location.href='index.html'">
+        Trade
+    </div>
+
+    <div onclick="location.href='quotes.html'">
+        Quotes
+    </div>
+
+    <div onclick="location.href='massage.html'">
+        Messages
+    </div>
+
+    <div onclick="location.href='history.html'">
+        History
+    </div>
+
+</div>
+
+
+<!-- CHART -->
+
+<main class="chart-area">
+
+    <div class="chart-label">
+
+        <div class="chart-symbol">
+            XAUUSD.mic
+        </div>
+
+        <div class="chart-time">
+            Gold · H4
+        </div>
+
+    </div>
+
+    <canvas id="chartCanvas"></canvas>
+
+
+    <!-- BUY / SELL -->
+
+    <div class="order-controls" id="orderControls">
+
+        <button class="order-button sell"
+                id="sellButton">
+            SELL 0.00
+        </button>
+
+        <select class="volume-select"
+                id="volumeSelect">
+
+            <option value="0.01">0.01</option>
+            <option value="0.05">0.05</option>
+            <option value="0.10">0.10</option>
+            <option value="0.50">0.50</option>
+            <option value="1.00">1.00</option>
+
+        </select>
+
+        <button class="order-button buy"
+                id="buyButton">
+            BUY 0.00
+        </button>
+
+    </div>
+
+</main>
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+    <a class="nav-item"
+       href="quotes.html">
+        <i>↕</i>
+        <span>Quotes</span>
+    </a>
+
+    <a class="nav-item active"
+       href="index.html">
+        <i>▥</i>
+        <span>Charts</span>
+    </a>
+
+    <a class="nav-item"
+       href="index.html">
+        <span class="balance-pill"
+              id="navBalanceDisplay">
+            1000.00
+        </span>
+    </a>
+
+    <a class="nav-item"
+       href="history.html">
+        <i>◷</i>
+        <span>History</span>
+    </a>
+
+    <a class="nav-item"
+       href="massage.html">
+        <i>☷</i>
+        <span>Messages</span>
+    </a>
+
+</nav>
+
+
+<script>
+
+/* =====================================================
+   ACCOUNT
+   ===================================================== */
+
+function initializeAccount(){
+
+    if(localStorage.getItem("balance") === null){
+
+        localStorage.setItem(
+            "balance",
+            "500.00"
+        );
+
+    }
+
+    if(localStorage.getItem("credit") === null){
+
+        localStorage.setItem(
+            "credit",
+            "500.00"
+        );
+
+    }
+
+    if(localStorage.getItem("openTrades") === null){
+
+        localStorage.setItem(
+            "openTrades",
+            "[]"
+        );
+
+    }
+
+    updateMoney();
+
+}
+
+
+/* =====================================================
+   MONEY FROM LOCAL STORAGE
+   ===================================================== */
+
+function updateMoney(){
+
+    const balance =
+        parseFloat(
+            localStorage.getItem("balance")
+        ) || 0;
+
+    const credit =
+        parseFloat(
+            localStorage.getItem("credit")
+        ) || 0;
+
+    const equity =
+        balance + credit;
+
+    document.getElementById(
+        "navBalanceDisplay"
+    ).textContent =
+        equity.toFixed(2);
+
+}
+
+
+/* =====================================================
+   CHART
+   ===================================================== */
+
+const canvas =
+    document.getElementById("chartCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+let candles = [];
+
+let currentPrice = 4142.86;
+
+
+/* CREATE STARTING CANDLES */
+
+function createCandles(){
+
+    candles = [];
+
+    let price = 4140;
+
+    for(let i=0;i<80;i++){
+
+        const open = price;
+
+        const change =
+            (Math.random() - 0.5) * 5;
+
+        const close =
+            open + change;
+
+        const high =
+            Math.max(open,close)
+            + Math.random() * 2;
+
+        const low =
+            Math.min(open,close)
+            - Math.random() * 2;
+
+        candles.push({
+            open:open,
+            close:close,
+            high:high,
+            low:low
+        });
+
+        price = close;
+
+    }
+
+    currentPrice =
+        candles[candles.length-1].close;
+
+}
+
+
+/* =====================================================
+   RESIZE
+   ===================================================== */
+
+function resizeCanvas(){
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    canvas.width =
+        rect.width * window.devicePixelRatio;
+
+    canvas.height =
+        rect.height * window.devicePixelRatio;
+
+    ctx.setTransform(
+        window.devicePixelRatio,
+        0,
+        0,
+        window.devicePixelRatio,
+        0,
+        0
+    );
+
+    drawChart();
+
+}
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+
+/* =====================================================
+   DRAW CHART
+   ===================================================== */
+
+function drawChart(){
+
+    const width =
+        canvas.clientWidth;
+
+    const height =
+        canvas.clientHeight;
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    if(candles.length === 0) return;
+
+
+    let highest =
+        Math.max(...candles.map(c=>c.high));
+
+    let lowest =
+        Math.min(...candles.map(c=>c.low));
+
+    const padding = 25;
+
+    highest += padding;
+    lowest -= padding;
+
+    function y(price){
+
+        return height -
+        ((price-lowest) /
+        (highest-lowest)) *
+        height;
+
+    }
+
+
+    /* GRID */
+
+    ctx.strokeStyle =
+        "#eeeeee";
+
+    ctx.lineWidth = 1;
+
+    for(let i=0;i<8;i++){
+
+        const gy =
+            (height / 8) * i;
+
+        ctx.beginPath();
+
+        ctx.moveTo(0,gy);
+        ctx.lineTo(width,gy);
+
+        ctx.stroke();
+
+    }
+
+
+    const candleWidth =
+        Math.max(
+            3,
+            width / candles.length * .55
+        );
+
+    const gap =
+        width / candles.length;
+
+
+    /* CANDLES */
+
+    candles.forEach((c,i)=>{
+
+        const x =
+            i * gap + gap/2;
+
+        const openY =
+            y(c.open);
+
+        const closeY =
+            y(c.close);
+
+        const highY =
+            y(c.high);
+
+        const lowY =
+            y(c.low);
+
+        const up =
+            c.close >= c.open;
+
+        ctx.strokeStyle =
+            up ? "#16803c" : "#d62828";
+
+        ctx.fillStyle =
+            up ? "#16803c" : "#d62828";
+
+        /* wick */
+
+        ctx.beginPath();
+
+        ctx.moveTo(x,highY);
+        ctx.lineTo(x,lowY);
+
+        ctx.stroke();
+
+        /* body */
+
+        const top =
+            Math.min(openY,closeY);
+
+        const bodyHeight =
+            Math.max(
+                1,
+                Math.abs(closeY-openY)
+            );
+
+        ctx.fillRect(
+            x-candleWidth/2,
+            top,
+            candleWidth,
+            bodyHeight
+        );
+
+    });
+
+
+    /* CURRENT PRICE */
+
+    currentPrice =
+        candles[candles.length-1].close;
+
+    const priceY =
+        y(currentPrice);
+
+    ctx.setLineDash([5,4]);
+
+    ctx.strokeStyle =
+        "#888";
+
+    ctx.beginPath();
+
+    ctx.moveTo(0,priceY);
+    ctx.lineTo(width,priceY);
+
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+
+
+    /* PRICE LABEL */
+
+    ctx.fillStyle =
+        "#222";
+
+    ctx.font =
+        "11px Arial";
+
+    ctx.fillText(
+        currentPrice.toFixed(2),
+        width - 60,
+        Math.max(
+            14,
+            Math.min(
+                height - 5,
+                priceY - 4
+            )
+        )
+    );
+
+
+    /* OPEN TRADE MARKERS */
+
+    drawOpenTradeMarkers();
+
+}
+
+
+/* =====================================================
+   GET OPEN TRADES
+   ===================================================== */
+
+function getOpenTrades(){
+
+    try{
+
+        const trades =
+            JSON.parse(
+                localStorage.getItem(
+                    "openTrades"
+                ) || "[]"
+            );
+
+        return Array.isArray(trades)
+            ? trades
+            : [];
+
+    }catch(e){
+
+        return [];
+
+    }
+
+}
+
+
+/* =====================================================
+   DRAW TRADE MARKERS
+   ===================================================== */
+
+function drawOpenTradeMarkers(){
+
+    const trades =
+        getOpenTrades();
+
+    if(!trades.length) return;
+
+    const width =
+        canvas.clientWidth;
+
+    const height =
+        canvas.clientHeight;
+
+    let highest =
+        Math.max(...candles.map(c=>c.high));
+
+    let lowest =
+        Math.min(...candles.map(c=>c.low));
+
+    highest += 25;
+    lowest -= 25;
+
+    function y(price){
+
+        return height -
+        ((price-lowest) /
+        (highest-lowest)) *
+        height;
+
+    }
+
+
+    trades.forEach((trade,index)=>{
+
+        const price =
+            Number(trade.price) ||
+            currentPrice;
+
+        const py =
+            y(price);
+
+        /*
+           Put the marker toward the right side
+           because these are currently open trades.
+        */
+
+        const px =
+            Math.max(
+                35,
+                width - 45 - index * 20
+            );
+
+
+        const isBuy =
+            String(trade.type)
+            .toUpperCase() === "BUY";
+
+
+        ctx.fillStyle =
+            isBuy ? "#1976d2" : "#e53935";
+
+        ctx.beginPath();
+
+        if(isBuy){
+
+            ctx.moveTo(px,py+7);
+            ctx.lineTo(px-6,py-4);
+            ctx.lineTo(px+6,py-4);
+
+        }else{
+
+            ctx.moveTo(px,py-7);
+            ctx.lineTo(px-6,py+4);
+            ctx.lineTo(px+6,py+4);
+
+        }
+
+        ctx.closePath();
+        ctx.fill();
+
+
+        ctx.font =
+            "10px Arial";
+
+        ctx.fillText(
+            isBuy ? "BUY" : "SELL",
+            px + 8,
+            py + 3
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   MOVING CHART
+   ===================================================== */
+
+function moveChart(){
+
+    if(!candles.length) return;
+
+    const last =
+        candles[candles.length-1];
+
+
+    const delta =
+        (Math.random()-0.5) * 1.8;
+
+    last.close += delta;
+
+    last.high =
+        Math.max(
+            last.high,
+            last.close +
+            Math.random() * .7
+        );
+
+    last.low =
+        Math.min(
+            last.low,
+            last.close -
+            Math.random() * .7
+        );
+
+
+    /*
+       Occasionally create a new candle.
+    */
+
+    if(Math.random() < 0.10){
+
+        const open =
+            last.close;
+
+        const close =
+            open +
+            (Math.random()-0.5)*3;
+
+        const high =
+            Math.max(open,close)
+            + Math.random()*1.2;
+
+        const low =
+            Math.min(open,close)
+            - Math.random()*1.2;
+
+        candles.push({
+            open:open,
+            close:close,
+            high:high,
+            low:low
+        });
+
+        if(candles.length > 80){
+
+            candles.shift();
+
+        }
+
+    }
+
+    drawChart();
+
+    updateOrderPrices();
+
+}
+
+
+/* =====================================================
+   BUY / SELL PRICES
+   ===================================================== */
+
+function updateOrderPrices(){
+
+    const sell =
+        currentPrice - .10;
+
+    const buy =
+        currentPrice + .10;
+
+    document.getElementById(
+        "sellButton"
+    ).textContent =
+        "SELL " + sell.toFixed(2);
+
+    document.getElementById(
+        "buyButton"
+    ).textContent =
+        "BUY " + buy.toFixed(2);
+
+}
+
+
+/* =====================================================
+   OPEN BUY / SELL CONTROLS
+   ===================================================== */
+
+function openMoreTools(){
+
+    document.getElementById(
+        "orderControls"
+    ).classList.toggle("active");
+
+    updateOrderPrices();
+
+}
+
+
+/* =====================================================
+   CREATE TRADE
+   ===================================================== */
+
+function placeTrade(type){
+
+    const volume =
+        parseFloat(
+            document.getElementById(
+                "volumeSelect"
+            ).value
+        ) || .01;
+
+    const price =
+        type === "BUY"
+            ? currentPrice + .10
+            : currentPrice - .10;
+
+
+    const now =
+        new Date();
+
+    const time =
+        now.toLocaleTimeString(
+            [],
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
+
+
+    const trade = {
+
+        id:
+            Date.now().toString(),
+
+        symbol:
+            "XAUUSD.mic",
+
+        type:
+            type,
+
+        volume:
+            volume,
+
+        price:
+            price,
+
+        time:
+            time
+
+    };
+
+
+    const trades =
+        getOpenTrades();
+
+    trades.push(trade);
+
+
+    localStorage.setItem(
+        "openTrades",
+        JSON.stringify(trades)
+    );
+
+
+    /*
+       Demo account:
+       Deduct a small simulated margin
+       from balance.
+    */
+
+    let balance =
+        parseFloat(
+            localStorage.getItem(
+                "balance"
+            )
+        ) || 0;
+
+    const margin =
+        volume * 10;
+
+    balance =
+        Math.max(
+            0,
+            balance - margin
+        );
+
+    localStorage.setItem(
+        "balance",
+        balance.toFixed(2)
+    );
+
+
+    localStorage.setItem(
+        "tradeUpdate",
+        Date.now().toString()
+    );
+
+
+    updateMoney();
+    drawChart();
+
+}
+
+
+/* =====================================================
+   BUY / SELL BUTTONS
+   ===================================================== */
+
+document.getElementById(
+    "buyButton"
+).addEventListener(
+    "click",
+    function(){
+
+        placeTrade("BUY");
+
+    }
+);
+
+
+document.getElementById(
+    "sellButton"
+).addEventListener(
+    "click",
+    function(){
+
+        placeTrade("SELL");
+
+    }
+);
+
+
+/* =====================================================
+   OTHER BUTTONS
+   ===================================================== */
+
+function addTrade(){
+
+    openMoreTools();
+
+}
+
+function openTradeTools(){
+
+    openMoreTools();
+
+}
+
+function openChartTools(){
+
+    /* Chart tool button remains available */
+
+}
+
+function openChartSettings(){
+
+    /* Chart settings remain available */
+
+}
+
+function changeTimeframe(){
+
+    /* H4 remains the selected timeframe */
+
+}
+
+
+/* =====================================================
+   MENU
+   ===================================================== */
+
+function toggleMenu(){
+
+    document.getElementById(
+        "dropdown"
+    ).classList.toggle("active");
+
+}
+
+
+/* =====================================================
+   SYNC WHEN TRADE.HTML CLOSES A TRADE
+   ===================================================== */
+
+window.addEventListener(
+    "storage",
+    function(event){
+
+        if(
+            event.key === "openTrades" ||
+            event.key === "balance" ||
+            event.key === "credit" ||
+            event.key === "tradeUpdate"
+        ){
+
+            updateMoney();
+
+            drawChart();
+
+            updateOrderPrices();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   WHEN RETURNING TO PAGE
+   ===================================================== */
+
+window.addEventListener(
+    "pageshow",
+    function(){
+
+        updateMoney();
+
+        drawChart();
+
+        updateOrderPrices();
+
+    }
+);
+
+
+/* =====================================================
+   START
+   ===================================================== */
+
+initializeAccount();
+
+createCandles();
+
+resizeCanvas();
+
+updateOrderPrices();
+
+
+/*
+   ONLY THE CHART MOVES.
+   The rest of the interface stays still.
+*/
+
+setInterval(
+    moveChart,
+    500
+);
+
+</script>
+
+</body>
+  </html>

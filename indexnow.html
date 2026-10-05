@@ -30,8 +30,7 @@ body{
     overflow:hidden;
 }
 
-/* ================= HEADER ================= */
-
+/* HEADER */
 .header{
     height:58px;
     display:flex;
@@ -64,7 +63,6 @@ body{
     border:0;
     background:none;
     padding:0;
-    margin:0;
     color:#333;
     font-size:21px;
     cursor:pointer;
@@ -75,7 +73,6 @@ body{
     justify-content:center;
 }
 
-/* TWO SEPARATE ARROWS */
 .direction-icon{
     width:28px;
     height:28px;
@@ -85,18 +82,7 @@ body{
     gap:4px;
 }
 
-.direction-icon .up{
-    font-size:17px;
-    transform:none;
-}
-
-.direction-icon .down{
-    font-size:17px;
-    transform:none;
-}
-
-/* ================= SIDEBAR ================= */
-
+/* SIDEBAR */
 .sidebar{
     position:fixed;
     top:0;
@@ -191,8 +177,6 @@ body{
     padding:1px 6px;
 }
 
-/* ================= OVERLAY ================= */
-
 .overlay{
     position:fixed;
     inset:0;
@@ -205,8 +189,7 @@ body{
     display:block;
 }
 
-/* ================= ACCOUNT ================= */
-
+/* ACCOUNT */
 .account-info{
     padding:14px 16px 4px;
     background:#fff;
@@ -240,15 +223,97 @@ body{
     text-align:right;
 }
 
-/* ================= EMPTY AREA ================= */
+/* OPEN TRADES */
+.open-trades{
+    flex-shrink:0;
+    max-height:210px;
+    overflow-y:auto;
+    border-top:1px solid #eeeeee;
+    border-bottom:1px solid #eeeeee;
+    background:#fff;
+}
 
+.open-trades-title{
+    padding:10px 16px 7px;
+    font-size:15px;
+    font-weight:600;
+}
+
+.no-trades{
+    padding:15px 16px;
+    color:#888;
+    font-size:14px;
+}
+
+.trade-card{
+    margin:0 12px 9px;
+    padding:10px 10px;
+    border:1px solid #e5e5e5;
+    border-radius:7px;
+    background:#fafafa;
+}
+
+.trade-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:7px;
+}
+
+.trade-symbol{
+    font-size:14px;
+    font-weight:600;
+}
+
+.trade-type{
+    font-size:12px;
+    font-weight:700;
+}
+
+.trade-type.buy{
+    color:#087f23;
+}
+
+.trade-type.sell{
+    color:#d62828;
+}
+
+.trade-details{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:4px 15px;
+    font-size:12px;
+    color:#666;
+}
+
+.trade-details strong{
+    color:#222;
+}
+
+.close-btn{
+    margin-top:9px;
+    width:100%;
+    height:32px;
+    border:0;
+    border-radius:5px;
+    background:#333;
+    color:#fff;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.close-btn:active{
+    transform:scale(.98);
+}
+
+/* EMPTY AREA */
 .spacer{
     flex:1;
     background:#fff;
 }
 
-/* ================= BOTTOM NAV ================= */
-
+/* BOTTOM NAV */
 .bottom-nav{
     height:72px;
     display:flex;
@@ -292,7 +357,6 @@ body{
     color:#007bff;
 }
 
-/* SEPARATE UP/DOWN ARROWS */
 .bottom-arrows{
     display:flex;
     align-items:center;
@@ -301,11 +365,7 @@ body{
     height:25px;
 }
 
-.bottom-arrows .up-arrow{
-    color:#007bff;
-    font-size:16px;
-}
-
+.bottom-arrows .up-arrow,
 .bottom-arrows .down-arrow{
     color:#007bff;
     font-size:16px;
@@ -345,8 +405,7 @@ body{
 
 <body>
 
-<!-- ================= SIDEBAR ================= -->
-
+<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
 
     <div class="sidebar-header">
@@ -416,8 +475,7 @@ body{
 
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-<!-- ================= HEADER ================= -->
-
+<!-- HEADER -->
 <div class="header">
 
     <div class="header-left">
@@ -434,16 +492,16 @@ body{
 
     <div class="header-right">
 
-        <!-- NO CROSSING LINE -->
         <button class="icon-btn" title="Trade direction">
             <span class="direction-icon">
-                <i class="fas fa-arrow-up up"></i>
-                <i class="fas fa-arrow-down down"></i>
+                <i class="fas fa-arrow-up"></i>
+                <i class="fas fa-arrow-down"></i>
             </span>
         </button>
 
-        <button class="icon-btn" title="New order"
-                onclick="location.href='chart.html'">
+        <button class="icon-btn"
+                title="New order"
+                onclick="location.href='index.html'">
             <i class="fas fa-file-circle-plus"></i>
         </button>
 
@@ -451,98 +509,82 @@ body{
 
 </div>
 
-<!-- ================= ACCOUNT ================= -->
-
+<!-- ACCOUNT -->
 <div class="account-info">
 
     <div class="row">
         <span class="label">Balance:</span>
         <span class="dots"></span>
-        <span class="value" id="balance">500.00</span>
+        <span class="value" id="balance">0.00</span>
     </div>
 
     <div class="row">
         <span class="label">Equity:</span>
         <span class="dots"></span>
-        <span class="value" id="equity">1000.00</span>
+        <span class="value" id="equity">0.00</span>
     </div>
 
     <div class="row">
         <span class="label">Free margin:</span>
         <span class="dots"></span>
-        <span class="value" id="margin">1000.00</span>
+        <span class="value" id="margin">0.00</span>
     </div>
+
+</div>
+
+<!-- OPEN TRADES -->
+<div class="open-trades">
+
+    <div class="open-trades-title">
+        Open Trades
+    </div>
+
+    <div id="openTradesList"></div>
 
 </div>
 
 <div class="spacer"></div>
 
-<!-- ================= BOTTOM NAV ================= -->
-
+<!-- BOTTOM NAV -->
 <div class="bottom-nav">
 
-    <!-- QUOTES -->
-    <a href="quotes.html" class="nav-item active">
-
+    <a href="quotes.html" class="nav-item">
         <div class="nav-icon-bg">
-
             <div class="bottom-arrows">
                 <i class="fas fa-arrow-up up-arrow"></i>
                 <i class="fas fa-arrow-down down-arrow"></i>
             </div>
-
         </div>
-
         <span>Quotes</span>
-
     </a>
 
-    <!-- CHARTS -->
-    <a href="chart.html" class="nav-item">
-
+    <a href="index.html" class="nav-item active">
         <div class="nav-icon-bg">
             <i class="fas fa-chart-bar"></i>
         </div>
-
         <span>Charts</span>
-
     </a>
 
-    <!-- EQUITY -->
-    <a href="chart.html" class="nav-item">
-
+    <a href="index.html" class="nav-item">
         <div class="nav-icon-bg">
             <i class="fas fa-chart-line"></i>
         </div>
-
-        <span class="balance-pill" id="navBalanceDisplay">
-            1000.00
-        </span>
-
+        <span class="balance-pill" id="navBalanceDisplay">0.00</span>
     </a>
 
-    <!-- HISTORY -->
     <a href="history.html" class="nav-item">
-
         <div class="nav-icon-bg">
             <i class="fas fa-history"></i>
         </div>
-
         <span>History</span>
-
     </a>
 
-    <!-- MESSAGES -->
     <a href="massage.html" class="nav-item messages">
-
         <div class="nav-icon-bg">
             <i class="fas fa-comments"></i>
         </div>
-
         <span>Messages</span>
-
         <span class="badge">1</span>
-
     </a>
 
 </div>
@@ -550,36 +592,26 @@ body{
 <script>
 
 /* =====================================================
-   ACCOUNT STORAGE
+   ACCOUNT
    ===================================================== */
 
 function initializeAccount(){
 
-    let balance = localStorage.getItem("balance");
-    let credit = localStorage.getItem("credit");
-
-    /*
-       Only create the account if it doesn't already exist.
-       This means trades will NOT be reset when the page
-       is refreshed.
-    */
-
-    if(balance === null){
+    if(localStorage.getItem("balance") === null){
         localStorage.setItem("balance","500.00");
-        balance = "500.00";
     }
 
-    if(credit === null){
+    if(localStorage.getItem("credit") === null){
         localStorage.setItem("credit","500.00");
-        credit = "500.00";
     }
 
     updateAccount();
+    displayOpenTrades();
 }
 
 
 /* =====================================================
-   UPDATE DISPLAY
+   ACCOUNT DISPLAY
    ===================================================== */
 
 function updateAccount(){
@@ -607,6 +639,151 @@ function updateAccount(){
 
 
 /* =====================================================
+   OPEN TRADES
+   ===================================================== */
+
+function getOpenTrades(){
+
+    try{
+
+        const trades =
+            JSON.parse(localStorage.getItem("openTrades") || "[]");
+
+        return Array.isArray(trades) ? trades : [];
+
+    }catch(error){
+
+        return [];
+
+    }
+}
+
+
+/* =====================================================
+   DISPLAY OPEN TRADES
+   ===================================================== */
+
+function displayOpenTrades(){
+
+    const container =
+        document.getElementById("openTradesList");
+
+    const trades = getOpenTrades();
+
+    container.innerHTML = "";
+
+    if(trades.length === 0){
+
+        container.innerHTML =
+            '<div class="no-trades">No open trades</div>';
+
+        return;
+    }
+
+    trades.forEach((trade,index)=>{
+
+        const card =
+            document.createElement("div");
+
+        card.className = "trade-card";
+
+        const type =
+            String(trade.type || "BUY").toUpperCase();
+
+        const typeClass =
+            type === "BUY" ? "buy" : "sell";
+
+        card.innerHTML = `
+
+            <div class="trade-top">
+
+                <span class="trade-symbol">
+                    ${trade.symbol || "XAUUSD.mic"}
+                </span>
+
+                <span class="trade-type ${typeClass}">
+                    ${type}
+                </span>
+
+            </div>
+
+            <div class="trade-details">
+
+                <div>
+                    Volume:
+                    <strong>${Number(trade.volume || 0.01).toFixed(2)}</strong>
+                </div>
+
+                <div>
+                    Price:
+                    <strong>${Number(trade.price || 0).toFixed(2)}</strong>
+                </div>
+
+                <div>
+                    Time:
+                    <strong>${trade.time || "--"}</strong>
+                </div>
+
+                <div>
+                    Ticket:
+                    <strong>${trade.id || index + 1}</strong>
+                </div>
+
+            </div>
+
+            <button class="close-btn"
+                    onclick="closeTrade('${trade.id}')">
+                CLOSE ${type}
+            </button>
+        `;
+
+        container.appendChild(card);
+
+    });
+}
+
+
+/* =====================================================
+   CLOSE TRADE
+   ===================================================== */
+
+function closeTrade(id){
+
+    let trades = getOpenTrades();
+
+    const trade =
+        trades.find(t => String(t.id) === String(id));
+
+    if(!trade) return;
+
+    /*
+       Demo account behavior:
+       Closing the trade removes it from openTrades.
+       The chart will therefore remove its marker too.
+    */
+
+    trades =
+        trades.filter(t => String(t.id) !== String(id));
+
+    localStorage.setItem(
+        "openTrades",
+        JSON.stringify(trades)
+    );
+
+    displayOpenTrades();
+    updateAccount();
+
+    /*
+       Tell other pages that the trade was closed.
+    */
+    localStorage.setItem(
+        "tradeUpdate",
+        Date.now().toString()
+    );
+}
+
+
+/* =====================================================
    SIDEBAR
    ===================================================== */
 
@@ -621,18 +798,37 @@ function toggleSidebar(){
 
 
 /* =====================================================
-   REFRESH WHEN RETURNING TO PAGE
+   LIVE LOCAL STORAGE SYNC
    ===================================================== */
 
-window.addEventListener("storage", updateAccount);
+window.addEventListener("storage",function(event){
 
-window.addEventListener("pageshow", updateAccount);
+    if(
+        event.key === "balance" ||
+        event.key === "credit" ||
+        event.key === "openTrades" ||
+        event.key === "tradeUpdate"
+    ){
+
+        updateAccount();
+        displayOpenTrades();
+
+    }
+
+});
+
+
+window.addEventListener("pageshow",function(){
+
+    updateAccount();
+    displayOpenTrades();
+
+});
+
 
 initializeAccount();
 
 </script>
 
 </body>
-</html>
-
-
+    </html>

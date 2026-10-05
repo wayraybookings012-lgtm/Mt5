@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trade -- VaultMarkets-Live</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
+    Helvetica,Arial,sans-serif;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    background:#fff;
+    color:#111;
+}
+
+body{
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+    height:58px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 16px;
+    background:#fff;
+    border-bottom:1px solid #eeeeee;
+    flex-shrink:0;
+}
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.header-title{
+    font-size:20px;
+    font-weight:500;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:22px;
+}
+
+.icon-btn{
+    border:0;
+    background:none;
+    padding:0;
+    margin:0;
+    color:#333;
+    font-size:21px;
+    cursor:pointer;
+    width:24px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* TWO SEPARATE ARROWS */
+.direction-icon{
+    width:28px;
+    height:28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+}
+
+.direction-icon .up{
+    font-size:17px;
+    transform:none;
+}
+
+.direction-icon .down{
+    font-size:17px;
+    transform:none;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:-310px;
+    width:300px;
+    height:100%;
+    background:#fff;
+    z-index:1001;
+    transition:left .25s ease;
+    box-shadow:3px 0 15px rgba(0,0,0,.15);
+    overflow-y:auto;
+}
+
+.sidebar.open{
+    left:0;
+}
+
+.sidebar-header{
+    padding:22px 20px 18px;
+    border-bottom:1px solid #eeeeee;
+}
+
+.sidebar-user{
+    font-size:16px;
+    font-weight:600;
+}
+
+.sidebar-account{
+    font-size:13px;
+    color:#888;
+    margin-top:5px;
+}
+
+.sidebar-link{
+    display:block;
+    margin-top:11px;
+    color:#007bff;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.menu-list{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.menu-item{
+    min-height:52px;
+    display:flex;
+    align-items:center;
+    padding:0 20px;
+    border-bottom:1px solid #f5f5f5;
+    color:#333;
+    font-size:15px;
+    cursor:pointer;
+}
+
+.menu-item:hover{
+    background:#f5f5f5;
+}
+
+.menu-item i{
+    width:25px;
+    margin-right:15px;
+    text-align:center;
+    color:#555;
+    font-size:17px;
+}
+
+.menu-item .badge{
+    margin-left:auto;
+    width:20px;
+    height:20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:50%;
+    background:#ff3b30;
+    color:#fff;
+    font-size:10px;
+    font-weight:bold;
+}
+
+.ads-badge{
+    margin-left:auto;
+    color:#007bff;
+    border:1px solid #007bff;
+    border-radius:9px;
+    font-size:9px;
+    font-weight:bold;
+    padding:1px 6px;
+}
+
+/* ================= OVERLAY ================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.4);
+    z-index:1000;
+    display:none;
+}
+
+.overlay.active{
+    display:block;
+}
+
+/* ================= ACCOUNT ================= */
+
+.account-info{
+    padding:14px 16px 4px;
+    background:#fff;
+    flex-shrink:0;
+}
+
+.row{
+    width:100%;
+    display:flex;
+    align-items:flex-end;
+    margin-bottom:14px;
+    font-size:15px;
+    line-height:1;
+}
+
+.label{
+    font-weight:500;
+    white-space:nowrap;
+}
+
+.dots{
+    flex:1;
+    border-bottom:1px dotted #aaa;
+    margin:0 9px 3px;
+}
+
+.value{
+    font-size:16px;
+    font-weight:600;
+    min-width:75px;
+    text-align:right;
+}
+
+/* ================= EMPTY AREA ================= */
+
+.spacer{
+    flex:1;
+    background:#fff;
+}
+
+/* ================= BOTTOM NAV ================= */
+
+.bottom-nav{
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:6px 10px 9px;
+    background:#fff;
+    border-top:1px solid #eeeeee;
+    flex-shrink:0;
+}
+
+.nav-item{
+    position:relative;
+    flex:1;
+    height:58px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-decoration:none;
+    color:#333;
+    font-size:10px;
+    cursor:pointer;
+}
+
+.nav-icon-bg{
+    height:30px;
+    min-width:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    margin-bottom:2px;
+}
+
+.nav-item.active .nav-icon-bg{
+    background:#e8f0fe;
+}
+
+.nav-item.active i{
+    color:#007bff;
+}
+
+/* SEPARATE UP/DOWN ARROWS */
+.bottom-arrows{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    height:25px;
+}
+
+.bottom-arrows .up-arrow{
+    color:#007bff;
+    font-size:16px;
+}
+
+.bottom-arrows .down-arrow{
+    color:#007bff;
+    font-size:16px;
+}
+
+.balance-pill{
+    background:#f0f0f0;
+    padding:3px 8px;
+    min-width:52px;
+    text-align:center;
+    border-radius:10px;
+    font-size:10px;
+    font-weight:600;
+}
+
+.messages{
+    position:relative;
+}
+
+.messages .badge{
+    position:absolute;
+    top:0;
+    right:17px;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#ff3b30;
+    color:#fff;
+    font-size:9px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+        <div class="sidebar-user">Thulane Nonyane</div>
+        <div class="sidebar-account">
+            8027375 - VaultMarkets-Live
+        </div>
+        <a href="#" class="sidebar-link">Manage accounts</a>
+    </div>
+
+    <ul class="menu-list">
+
+        <li class="menu-item" onclick="location.href='index.html'">
+            <i class="fas fa-chart-line"></i>
+            Trade
+        </li>
+
+        <li class="menu-item" onclick="location.href='quotes.html'">
+            <i class="fas fa-newspaper"></i>
+            News
+        </li>
+
+        <li class="menu-item" onclick="location.href='massage.html'">
+            <i class="fas fa-envelope"></i>
+            Mailbox
+            <span class="badge">7</span>
+        </li>
+
+        <li class="menu-item">
+            <i class="fas fa-book"></i>
+            Journal
+        </li>
+
+        <li class="menu-item">
+            <i class="fas fa-cog"></i>
+            Settings
+        </li>
+
+        <li class="menu-item">
+            <i class="fas fa-calendar-alt"></i>
+            Economic calendar
+            <span class="ads-badge">Ads</span>
+        </li>
+
+        <li class="menu-item">
+            <i class="fas fa-users"></i>
+            Traders Community
+        </li>
+
+        <li class="menu-item">
+            <i class="fas fa-robot"></i>
+            MQL5 Algo Trading
+        </li>
+
+        <li class="menu-item">
+            <i class="fas fa-question-circle"></i>
+            User guide
+        </li>
+
+        <li class="menu-item">
+            <i class="fas fa-info-circle"></i>
+            About
+        </li>
+
+    </ul>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ================= HEADER ================= -->
+
+<div class="header">
+
+    <div class="header-left">
+
+        <button class="icon-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="header-title">
+            Trade
+        </div>
+
+    </div>
+
+    <div class="header-right">
+
+        <!-- NO CROSSING LINE -->
+        <button class="icon-btn" title="Trade direction">
+            <span class="direction-icon">
+                <i class="fas fa-arrow-up up"></i>
+                <i class="fas fa-arrow-down down"></i>
+            </span>
+        </button>
+
+        <button class="icon-btn" title="New order"
+                onclick="location.href='chart.html'">
+            <i class="fas fa-file-circle-plus"></i>
+        </button>
+
+    </div>
+
+</div>
+
+<!-- ================= ACCOUNT ================= -->
+
+<div class="account-info">
+
+    <div class="row">
+        <span class="label">Balance:</span>
+        <span class="dots"></span>
+        <span class="value" id="balance">500.00</span>
+    </div>
+
+    <div class="row">
+        <span class="label">Equity:</span>
+        <span class="dots"></span>
+        <span class="value" id="equity">1000.00</span>
+    </div>
+
+    <div class="row">
+        <span class="label">Free margin:</span>
+        <span class="dots"></span>
+        <span class="value" id="margin">1000.00</span>
+    </div>
+
+</div>
+
+<div class="spacer"></div>
+
+<!-- ================= BOTTOM NAV ================= -->
+
+<div class="bottom-nav">
+
+    <!-- QUOTES -->
+    <a href="quotes.html" class="nav-item active">
+
+        <div class="nav-icon-bg">
+
+            <div class="bottom-arrows">
+                <i class="fas fa-arrow-up up-arrow"></i>
+                <i class="fas fa-arrow-down down-arrow"></i>
+            </div>
+
+        </div>
+
+        <span>Quotes</span>
+
+    </a>
+
+    <!-- CHARTS -->
+    <a href="chart.html" class="nav-item">
+
+        <div class="nav-icon-bg">
+            <i class="fas fa-chart-bar"></i>
+        </div>
+
+        <span>Charts</span>
+
+    </a>
+
+    <!-- EQUITY -->
+    <a href="chart.html" class="nav-item">
+
+        <div class="nav-icon-bg">
+            <i class="fas fa-chart-line"></i>
+        </div>
+
+        <span class="balance-pill" id="navBalanceDisplay">
+            1000.00
+        </span>
+
+    </a>
+
+    <!-- HISTORY -->
+    <a href="history.html" class="nav-item">
+
+        <div class="nav-icon-bg">
+            <i class="fas fa-history"></i>
+        </div>
+
+        <span>History</span>
+
+    </a>
+
+    <!-- MESSAGES -->
+    <a href="massage.html" class="nav-item messages">
+
+        <div class="nav-icon-bg">
+            <i class="fas fa-comments"></i>
+        </div>
+
+        <span>Messages</span>
+
+        <span class="badge">1</span>
+
+    </a>
+
+</div>
+
+<script>
+
+/* =====================================================
+   ACCOUNT STORAGE
+   ===================================================== */
+
+function initializeAccount(){
+
+    let balance = localStorage.getItem("balance");
+    let credit = localStorage.getItem("credit");
+
+    /*
+       Only create the account if it doesn't already exist.
+       This means trades will NOT be reset when the page
+       is refreshed.
+    */
+
+    if(balance === null){
+        localStorage.setItem("balance","500.00");
+        balance = "500.00";
+    }
+
+    if(credit === null){
+        localStorage.setItem("credit","500.00");
+        credit = "500.00";
+    }
+
+    updateAccount();
+}
+
+
+/* =====================================================
+   UPDATE DISPLAY
+   ===================================================== */
+
+function updateAccount(){
+
+    const balance =
+        parseFloat(localStorage.getItem("balance")) || 0;
+
+    const credit =
+        parseFloat(localStorage.getItem("credit")) || 0;
+
+    const equity = balance + credit;
+
+    document.getElementById("balance").textContent =
+        balance.toFixed(2);
+
+    document.getElementById("equity").textContent =
+        equity.toFixed(2);
+
+    document.getElementById("margin").textContent =
+        equity.toFixed(2);
+
+    document.getElementById("navBalanceDisplay").textContent =
+        equity.toFixed(2);
+}
+
+
+/* =====================================================
+   SIDEBAR
+   ===================================================== */
+
+function toggleSidebar(){
+
+    document.getElementById("sidebar")
+        .classList.toggle("open");
+
+    document.getElementById("overlay")
+        .classList.toggle("active");
+}
+
+
+/* =====================================================
+   REFRESH WHEN RETURNING TO PAGE
+   ===================================================== */
+
+window.addEventListener("storage", updateAccount);
+
+window.addEventListener("pageshow", updateAccount);
+
+initializeAccount();
+
+</script>
+
+</body>
+</html>
+
+

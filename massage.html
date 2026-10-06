@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaQuotes Messages</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Mobile Device Container */
+        .app-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #ffffff;
+            height: 100vh;
+            max-height: 850px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            flex-shrink: 0;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            color: #333;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .header-titles {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-titles h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 2px;
+        }
+
+        .header-titles h2 {
+            font-size: 13px;
+            font-weight: 400;
+            color: #777;
+        }
+
+        .check-icon {
+            font-size: 20px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        /* Message List */
+        .message-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+
+        .message-item {
+            display: flex;
+            flex-direction: column;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .message-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .message-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .unread-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #d32f2f;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .message-date {
+            font-size: 13px;
+            color: #777;
+        }
+
+        .message-sender {
+            font-size: 14px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .message-text {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #ffffff;
+            border-top: 1px solid #e0e0e0;
+            padding: 10px 0;
+            flex-shrink: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #777;
+            font-size: 11px;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .nav-item.active {
+            color: #2196F3;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            font-weight: 300;
+        }
+
+        /* Bottom Floating Pill */
+        .nav-pill {
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 2px;
+        }
+
+        /* Red Badge */
+        .badge {
+            position: absolute;
+            top: -6px;
+            right: -10px;
+            background-color: #d32f2f;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 10px;
+            padding: 2px 6px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .nav-item-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="menu-icon">&#9776;</div> <!-- Hamburger menu icon -->
+            <div class="header-titles">
+                <h1>Messages</h1>
+                <h2>MetaQuotes / VaultMarkets</h2>
+            </div>
+            <div class="check-icon">&#10003;</div> <!-- Checkmark icon -->
+        </header>
+
+        <!-- Message List -->
+        <main class="message-list">
+            
+            <div class="message-item" onclick="openMessage('Deposit received', 'VaultMarkets: You deposited 500 USD and your credit is 500 USD.')">
+                <div class="message-header">
+                    <div class="message-title"><span class="unread-dot"></span> Deposit received</div>
+                    <div class="message-date">2026.10.06</div>
+                </div>
+                <div class="message-text"><span class="message-sender">VaultMarkets:</span> You deposited 500 USD and your credit is 500 USD.</div>
+            </div>
+
+            <div class="message-item" onclick="openMessage('Welcome bonus credited', 'VaultMarkets: Dear Themba, your $500 welcome credit has been applied to account 8027375.')">
+                <div class="message-header">
+                    <div class="message-title"><span class="unread-dot"></span> Welcome bonus credited</div>
+                    <div class="message-date">2026.10.06</div>
+                </div>
+                <div class="message-text"><span class="message-sender">VaultMarkets:</span> Dear Themba, your $500 welcome credit has been applied to account 8027375.</div>
+            </div>
+
+            <div class="message-item" onclick="openMessage('MetaTrader 5 build 4520', 'MetaQuotes: The new MT5 build improves chart rendering performance and fixes copy-trading sync issues.')">
+                <div class="message-header">
+                    <div class="message-title"><span class="unread-dot"></span> MetaTrader 5 build 4520</div>
+                    <div class="message-date">02 Oct</div>
+                </div>
+                <div class="message-text"><span class="message-sender">MetaQuotes:</span> The new MT5 build improves chart rendering performance and fixes copy-trading sync issues.</div>
+            </div>
+
+            <div class="message-item" onclick="openMessage('Margin call warning', 'VaultMarkets: Your margin level on account 8027375 dropped below 150%. Please deposit or reduce exposure.')">
+                <div class="message-header">
+                    <div class="message-title"><span class="unread-dot"></span> Margin call warning</div>
+                    <div class="message-date">01 Oct</div>
+                </div>
+                <div class="message-text"><span class="message-sender">VaultMarkets:</span> Your margin level on account 8027375 dropped below 150%. Please deposit or reduce exposure.</div>
+            </div>
+
+            <div class="message-item" onclick="openMessage('Signal provider update', 'MQL5 Community: "GoldSnipper PRO" has updated its trading strategy description and risk profile.')">
+                <div class="message-header">
+                    <div class="message-title"><span class="unread-dot"></span> Signal provider update</div>
+                    <div class="message-date">30 Sep</div>
+                </div>
+                <div class="message-text"><span class="message-sender">MQL5 Community:</span> "GoldSnipper PRO" has updated its trading strategy description and risk profile.</div>
+            </div>
+
+            <div class="message-item" onclick="openMessage('Withdrawal processed', 'VaultMarkets: Your withdrawal of 4,000.00 USD has been completed. Reference WD-88412.')">
+                <div class="message-header">
+                    <div class="message-title">Withdrawal processed</div>
+                    <div class="message-date">27 Jul</div>
+                </div>
+                <div class="message-text"><span class="message-sender">VaultMarkets:</span> Your withdrawal of 4,000.00 USD has been completed. Reference WD-88412.</div>
+            </div>
+
+            <div class="message-item" onclick="openMessage('Scheduled server maintenance', 'MetaQuotes: Demo servers will be unavailable Sunday 06:00-08:00 GMT. Live servers unaffected.')">
+                <div class="message-header">
+                    <div class="message-title">Scheduled server maintenance</div>
+                    <div class="message-date">25 Jul</div>
+                </div>
+                <div class="message-text"><span class="message-sender">MetaQuotes:</span> Demo servers will be unavailable Sunday 06:00-08:00 GMT. Live servers unaffected.</div>
+            </div>
+
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <!-- As requested: Quotes redirects to quote.html -->
+            <a href="quote.html" class="nav-item">
+                <div class="nav-icon">&#8645;</div>
+                <span>Quotes</span>
+            </a>
+            
+            <!-- As requested: Charts redirects to chart.html -->
+            <a href="chart.html" class="nav-item">
+                <div class="nav-icon">&#9636;</div>
+                <span>Charts</span>
+            </a>
+            
+            <div class="nav-item" style="pointer-events: none;">
+                <div class="nav-pill">7,550.01</div>
+            </div>
+            
+            <a href="#" class="nav-item">
+                <div class="nav-icon">&#8634;</div>
+                <span>History</span>
+            </a>
+            
+            <!-- Active State -->
+            <a href="index.html" class="nav-item active">
+                <div class="nav-item-wrapper">
+                    <div class="nav-icon">&#128172;</div>
+                    <span>Messages</span>
+                    <span class="badge">5</span>
+                </div>
+            </a>
+        </nav>
+
+    </div>
+
+    <script>
+        // Function to handle what happens when a message is clicked.
+        // In your application, this is where you would load the second image (the chat thread).
+        function openMessage(title, text) {
+            // Normally you would redirect to a URL like: 
+            // window.location.href = `message.html?title=${encodeURIComponent(title)}&text=${encodeURIComponent(text)}`;
+            
+            // For now, we'll just simulate the "Chat View" by updating the header and clearing the list
+            // This simulates the transition to the "Second Picture"
+            document.querySelector('.header-titles h1').innerText = title;
+            document.querySelector('.header-titles h2').innerText = 'VaultMarkets-Live';
+            
+            const list = document.querySelector('.message-list');
+            list.innerHTML = `
+                <div style="padding: 20px; display: flex; flex-direction: column; gap: 15px;">
+                    <div style="background: #f0f0f0; padding: 10px; border-radius: 8px; font-size: 13px; color: #333; width: fit-content; max-width: 80%;">
+                        ${text}
+                    </div>
+                    <div style="background: #e3f2fd; padding: 10px; border-radius: 8px; font-size: 13px; color: #333; width: fit-content; max-width: 80%; align-self: flex-end; text-align: right;">
+                        '8027375' : deal #149164680 buy 0.1 XAUUSD.mic at 4413.65 done, profit: -61.71 ZAR
+                    </div>
+                </div>
+            `;
+            
+            // Add a simple back button to the header temporarily
+            const header = document.querySelector('.header');
+            const backBtn = document.createElement('div');
+            backBtn.innerHTML = '&#8592;'; // Left arrow
+            backBtn.style.marginRight = '15px';
+            backBtn.style.fontSize = '24px';
+            backBtn.style.cursor = 'pointer';
+            backBtn.onclick = () => { location.reload(); }; // Reload to reset the page
+            
+            // Replace menu with back button
+            header.replaceChild(backBtn, header.querySelector('.menu-icon'));
+        }
+    </script>
+</body>
+</html>

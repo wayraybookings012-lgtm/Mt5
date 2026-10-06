@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+
+<title>MetaQuotes History</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    background:#fff;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* =====================================================
+   APP
+===================================================== */
+
+.app-container{
+
+    width:100%;
+    max-width:400px;
+
+    height:100vh;
+    max-height:850px;
+
+    background:#fff;
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
+
+    position:relative;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+
+    height:58px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 16px;
+
+    background:#fff;
+
+    border-bottom:1px solid #eeeeee;
+
+    flex-shrink:0;
+}
+
+.header-left{
+
+    display:flex;
+    align-items:center;
+
+    gap:18px;
+}
+
+.menu-icon{
+
+    border:0;
+    background:none;
+
+    font-size:22px;
+
+    color:#333;
+
+    cursor:pointer;
+}
+
+.header-titles{
+
+    display:flex;
+    flex-direction:column;
+}
+
+.header-titles h1{
+
+    font-size:19px;
+    font-weight:500;
+
+    color:#111;
+
+    line-height:1.2;
+}
+
+.header-titles h2{
+
+    font-size:13px;
+    font-weight:400;
+
+    color:#777;
+
+    line-height:1.3;
+}
+
+.header-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    color:#444;
+
+    font-size:19px;
+}
+
+.header-right span{
+
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+
+/* =====================================================
+   TABS
+===================================================== */
+
+.tabs{
+
+    display:flex;
+
+    height:46px;
+
+    border-bottom:1px solid #e0e0e0;
+
+    background:#fff;
+
+    flex-shrink:0;
+}
+
+.tab{
+
+    flex:1;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:13px;
+
+    font-weight:500;
+
+    color:#777;
+
+    cursor:pointer;
+
+    position:relative;
+}
+
+.tab.active{
+
+    color:#222;
+
+    font-weight:600;
+}
+
+.tab.active::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:10%;
+    right:10%;
+
+    bottom:-1px;
+
+    height:2px;
+
+    background:#1976d2;
+}
+
+
+/* =====================================================
+   HISTORY LIST
+===================================================== */
+
+.history-list{
+
+    flex:1;
+
+    overflow-y:auto;
+
+    scrollbar-width:none;
+
+    -ms-overflow-style:none;
+
+    background:#fff;
+}
+
+.history-list::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* =====================================================
+   SUMMARY
+===================================================== */
+
+.summary-section{
+
+    padding:14px 16px;
+
+    border-bottom:1px solid #eeeeee;
+}
+
+.summary-row{
+
+    display:flex;
+
+    align-items:baseline;
+
+    width:100%;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+}
+
+.summary-row:last-child{
+    margin-bottom:0;
+}
+
+.summary-row .label{
+
+    flex-shrink:0;
+
+    color:#111;
+
+    font-weight:500;
+}
+
+.summary-row .dots{
+
+    flex:1;
+
+    border-bottom:1px dotted #aaa;
+
+    margin:0 7px 4px;
+}
+
+.summary-row .value{
+
+    flex-shrink:0;
+
+    min-width:75px;
+
+    text-align:right;
+
+    font-weight:600;
+}
+
+.color-red{
+    color:#d32f2f;
+}
+
+.color-blue{
+    color:#1976d2;
+}
+
+.color-black{
+    color:#111;
+}
+
+
+/* =====================================================
+   DATE GROUP
+===================================================== */
+
+.date-heading{
+
+    padding:10px 16px 6px;
+
+    font-size:12px;
+
+    color:#888;
+
+    background:#fafafa;
+
+    border-bottom:1px solid #eeeeee;
+
+    text-transform:uppercase;
+}
+
+
+/* =====================================================
+   TRANSACTION
+===================================================== */
+
+.transaction-item{
+
+    padding:11px 16px;
+
+    border-bottom:1px solid #eeeeee;
+
+    background:#fff;
+
+    cursor:pointer;
+}
+
+.transaction-item:active{
+
+    background:#f5f5f5;
+}
+
+.transaction-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+}
+
+.transaction-info{
+
+    min-width:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:2px;
+}
+
+.transaction-symbol{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#111;
+}
+
+.transaction-symbol span{
+
+    font-size:12px;
+
+    font-weight:600;
+
+    margin-left:3px;
+}
+
+.buy{
+    color:#087f23;
+}
+
+.sell{
+    color:#d62828;
+}
+
+.transaction-prices{
+
+    font-size:13px;
+
+    color:#666;
+}
+
+.transaction-prices span{
+
+    color:#999;
+
+    margin:0 4px;
+}
+
+.transaction-right{
+
+    text-align:right;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:3px;
+
+    flex-shrink:0;
+
+    margin-left:10px;
+}
+
+.transaction-date{
+
+    font-size:11px;
+
+    color:#888;
+
+    white-space:nowrap;
+}
+
+.transaction-profit{
+
+    font-size:14px;
+
+    font-weight:600;
+}
+
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.empty-history{
+
+    padding:45px 20px;
+
+    text-align:center;
+
+    color:#888;
+
+    font-size:14px;
+}
+
+.empty-history-icon{
+
+    font-size:35px;
+
+    color:#ccc;
+
+    margin-bottom:10px;
+}
+
+
+/* =====================================================
+   BOTTOM NAV
+===================================================== */
+
+.bottom-nav{
+
+    height:72px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:6px 10px 9px;
+
+    background:#fff;
+
+    border-top:1px solid #eeeeee;
+
+    flex-shrink:0;
+}
+
+.nav-item{
+
+    flex:1;
+
+    height:58px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-decoration:none;
+
+    color:#333;
+
+    font-size:10px;
+
+    cursor:pointer;
+}
+
+.nav-icon-bg{
+
+    height:30px;
+
+    min-width:42px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:12px;
+
+    margin-bottom:2px;
+
+    font-size:19px;
+}
+
+.nav-item.active .nav-icon-bg{
+
+    background:#e8f0fe;
+}
+
+.nav-item.active{
+
+    color:#007bff;
+}
+
+.bottom-arrows{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:5px;
+
+    color:#333;
+
+    font-size:15px;
+}
+
+.balance-pill{
+
+    background:#f0f0f0;
+
+    padding:3px 8px;
+
+    min-width:52px;
+
+    text-align:center;
+
+    border-radius:10px;
+
+    font-size:10px;
+
+    font-weight:600;
+
+    color:#222;
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+    left:-310px;
+
+    width:300px;
+    height:100%;
+
+    background:#fff;
+
+    z-index:1001;
+
+    transition:left .25s ease;
+
+    box-shadow:3px 0 15px rgba(0,0,0,.15);
+
+    overflow-y:auto;
+}
+
+.sidebar.open{
+    left:0;
+}
+
+.sidebar-header{
+
+    padding:22px 20px 18px;
+
+    border-bottom:1px solid #eee;
+}
+
+.sidebar-user{
+
+    font-size:16px;
+
+    font-weight:600;
+}
+
+.sidebar-account{
+
+    font-size:13px;
+
+    color:#888;
+
+    margin-top:5px;
+}
+
+.menu-list{
+
+    list-style:none;
+
+    padding:0;
+    margin:0;
+}
+
+.menu-item{
+
+    min-height:52px;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:0 20px;
+
+    border-bottom:1px solid #f5f5f5;
+
+    color:#333;
+
+    font-size:15px;
+
+    cursor:pointer;
+}
+
+.menu-item:hover{
+    background:#f5f5f5;
+}
+
+.menu-item i{
+
+    width:25px;
+
+    margin-right:15px;
+
+    text-align:center;
+
+    color:#555;
+}
+
+.overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.4);
+
+    z-index:1000;
+
+    display:none;
+}
+
+.overlay.active{
+    display:block;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<div class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+
+        <div class="sidebar-user">
+            Thulane Nonyane
+        </div>
+
+        <div class="sidebar-account">
+            8027375 - VaultMarkets-Live
+        </div>
+
+    </div>
+
+    <ul class="menu-list">
+
+        <li class="menu-item"
+            onclick="location.href='index.html'">
+            ☰ &nbsp; Trade
+        </li>
+
+        <li class="menu-item"
+            onclick="location.href='quotes.html'">
+            ◈ &nbsp; News
+        </li>
+
+        <li class="menu-item"
+            onclick="location.href='massage.html'">
+            ✉ &nbsp; Mailbox
+        </li>
+
+        <li class="menu-item">
+            📖 &nbsp; Journal
+        </li>
+
+        <li class="menu-item">
+            ⚙ &nbsp; Settings
+        </li>
+
+        <li class="menu-item">
+            📅 &nbsp; Economic calendar
+        </li>
+
+        <li class="menu-item">
+            👥 &nbsp; Traders Community
+        </li>
+
+        <li class="menu-item">
+            🤖 &nbsp; MQL5 Algo Trading
+        </li>
+
+        <li class="menu-item">
+            ❓ &nbsp; User guide
+        </li>
+
+        <li class="menu-item">
+            ℹ &nbsp; About
+        </li>
+
+    </ul>
+
+</div>
+
+<div class="overlay"
+     id="overlay"
+     onclick="toggleSidebar()">
+</div>
+
+
+<div class="app-container">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div class="header-left">
+
+        <button class="menu-icon"
+                onclick="toggleSidebar()">
+            ☰
+        </button>
+
+        <div class="header-titles">
+
+            <h1>History</h1>
+
+            <h2>All symbols</h2>
+
+        </div>
+
+    </div>
+
+    <div class="header-right">
+
+        <span onclick="loadHistory()">↻</span>
+
+        <span>⇅</span>
+
+        <span>▣</span>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     TABS
+===================================================== -->
+
+<div class="tabs">
+
+    <div class="tab active"
+         onclick="setTab(this,'positions')">
+        POSITIONS
+    </div>
+
+    <div class="tab"
+         onclick="setTab(this,'orders')">
+        ORDERS
+    </div>
+
+    <div class="tab"
+         onclick="setTab(this,'deals')">
+        DEALS
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     HISTORY
+===================================================== -->
+
+<main class="history-list"
+      id="historyList">
+
+
+<!-- SUMMARY -->
+
+<div class="summary-section">
+
+    <div class="summary-row">
+
+        <span class="label">
+            Profit:
+        </span>
+
+        <span class="dots"></span>
+
+        <span class="value"
+              id="totalProfit">
+            0.00
+        </span>
+
+    </div>
+
+
+    <div class="summary-row">
+
+        <span class="label">
+            Deposit
+        </span>
+
+        <span class="dots"></span>
+
+        <span class="value color-black"
+              id="totalDeposit">
+            0.00
+        </span>
+
+    </div>
+
+
+    <div class="summary-row">
+
+        <span class="label">
+            Withdrawal:
+        </span>
+
+        <span class="dots"></span>
+
+        <span class="value color-black"
+              id="totalWithdrawal">
+            0.00
+        </span>
+
+    </div>
+
+
+    <div class="summary-row">
+
+        <span class="label">
+            Swap:
+        </span>
+
+        <span class="dots"></span>
+
+        <span class="value color-black"
+              id="totalSwap">
+            0.00
+        </span>
+
+    </div>
+
+
+    <div class="summary-row">
+
+        <span class="label">
+            Commission:
+        </span>
+
+        <span class="dots"></span>
+
+        <span class="value color-black"
+              id="totalCommission">
+            0.00
+        </span>
+
+    </div>
+
+
+    <div class="summary-row">
+
+        <span class="label">
+            Balance:
+        </span>
+
+        <span class="dots"></span>
+
+        <span class="value color-black"
+              id="historyBalance">
+            0.00
+        </span>
+
+    </div>
+
+</div>
+
+
+<div id="transactionsContainer"></div>
+
+
+</main>
+
+
+<!-- =====================================================
+     BOTTOM NAV
+===================================================== -->
+
+<nav class="bottom-nav">
+
+    <a href="quotes.html"
+       class="nav-item">
+
+        <div class="nav-icon-bg">
+
+            <div class="bottom-arrows">
+
+                <span>↑</span>
+                <span>↓</span>
+
+            </div>
+
+        </div>
+
+        <span>Quotes</span>
+
+    </a>
+
+
+    <a href="index.html"
+       class="nav-item">
+
+        <div class="nav-icon-bg">
+            ▥
+        </div>
+
+        <span>Charts</span>
+
+    </a>
+
+
+    <a href="index.html"
+       class="nav-item">
+
+        <div class="nav-icon-bg">
+
+            <span class="balance-pill"
+                  id="navBalance">
+                0.00
+            </span>
+
+        </div>
+
+    </a>
+
+
+    <a href="history.html"
+       class="nav-item active">
+
+        <div class="nav-icon-bg">
+            ↶
+        </div>
+
+        <span>History</span>
+
+    </a>
+
+
+    <a href="massage.html"
+       class="nav-item">
+
+        <div class="nav-icon-bg">
+            💬
+        </div>
+
+        <span>Messages</span>
+
+    </a>
+
+</nav>
+
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   LOCAL HISTORY STORAGE
+===================================================== */
+
+function getClosedTrades(){
+
+    try{
+
+        const data =
+            JSON.parse(
+                localStorage.getItem("closedTrades") || "[]"
+            );
+
+        return Array.isArray(data) ? data : [];
+
+    }catch(error){
+
+        return [];
+
+    }
+}
+
+
+/* =====================================================
+   SAVE HISTORY'S OWN COPY
+===================================================== */
+
+function saveHistoryLocally(trades){
+
+    localStorage.setItem(
+        "historyTrades",
+        JSON.stringify(trades)
+    );
+
+}
+
+
+/* =====================================================
+   FORMAT MONEY
+===================================================== */
+
+function money(value){
+
+    const number =
+        Number(value) || 0;
+
+    return number.toFixed(2);
+
+}
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(dateValue){
+
+    if(!dateValue){
+        return "--";
+    }
+
+    const date =
+        new Date(dateValue);
+
+    if(isNaN(date.getTime())){
+
+        return String(dateValue);
+
+    }
+
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(date.getMonth()+1)
+        .padStart(2,"0");
+
+    const day =
+        String(date.getDate())
+        .padStart(2,"0");
+
+    const hours =
+        String(date.getHours())
+        .padStart(2,"0");
+
+    const minutes =
+        String(date.getMinutes())
+        .padStart(2,"0");
+
+    const seconds =
+        String(date.getSeconds())
+        .padStart(2,"0");
+
+    return `${year}.${month}.${day} ${hours}:${minutes}:${seconds}`;
+
+}
+
+
+/* =====================================================
+   LOAD HISTORY
+===================================================== */
+
+function loadHistory(){
+
+    /*
+       closedTrades is the master history created by
+       trade.html.
+    */
+
+    const closedTrades =
+        getClosedTrades();
+
+
+    /*
+       History also maintains its own local copy.
+    */
+
+    saveHistoryLocally(closedTrades);
+
+
+    displaySummary(closedTrades);
+
+    displayTransactions(closedTrades);
+
+}
+
+
+/* =====================================================
+   DISPLAY SUMMARY
+===================================================== */
+
+function displaySummary(trades){
+
+    let profit = 0;
+
+    let swap = 0;
+
+    let commission = 0;
+
+
+    trades.forEach(trade => {
+
+        profit +=
+            Number(trade.profit) || 0;
+
+        swap +=
+            Number(trade.swap) || 0;
+
+        commission +=
+            Number(trade.commission) || 0;
+
+    });
+
+
+    const balance =
+        Number(
+            localStorage.getItem("balance")
+        ) || 0;
+
+
+    document.getElementById(
+        "totalProfit"
+    ).textContent =
+        money(profit);
+
+
+    document.getElementById(
+        "totalDeposit"
+    ).textContent =
+        money(
+            Number(
+                localStorage.getItem("deposit")
+            ) || 0
+        );
+
+
+    document.getElementById(
+        "totalWithdrawal"
+    ).textContent =
+        money(
+            Number(
+                localStorage.getItem("withdrawal")
+            ) || 0
+        );
+
+
+    document.getElementById(
+        "totalSwap"
+    ).textContent =
+        money(swap);
+
+
+    document.getElementById(
+        "totalCommission"
+    ).textContent =
+        money(commission);
+
+
+    document.getElementById(
+        "historyBalance"
+    ).textContent =
+        money(balance);
+
+
+    document.getElementById(
+        "navBalance"
+    ).textContent =
+        money(balance);
+
+
+    const profitElement =
+        document.getElementById("totalProfit");
+
+
+    if(profit < 0){
+
+        profitElement.className =
+            "value color-red";
+
+    }else if(profit > 0){
+
+        profitElement.className =
+            "value color-blue";
+
+    }else{
+
+        profitElement.className =
+            "value color-black";
+
+    }
+
+}
+
+
+/* =====================================================
+   DISPLAY TRANSACTIONS
+===================================================== */
+
+function displayTransactions(trades){
+
+    const container =
+        document.getElementById(
+            "transactionsContainer"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if(trades.length === 0){
+
+        container.innerHTML = `
+
+            <div class="empty-history">
+
+                <div class="empty-history-icon">
+                    ↶
+                </div>
+
+                No closed trades
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /*
+       Group trades by close date.
+    */
+
+    const groups = {};
+
+
+    trades.forEach(trade => {
+
+        const date =
+            trade.closeTime ||
+            trade.time ||
+            "";
+
+
+        const dateObject =
+            new Date(date);
+
+
+        let key;
+
+
+        if(!isNaN(dateObject.getTime())){
+
+            key =
+                dateObject
+                .toISOString()
+                .substring(0,10);
+
+        }else{
+
+            key =
+                String(date)
+                .substring(0,10);
+
+        }
+
+
+        if(!groups[key]){
+            groups[key] = [];
+        }
+
+
+        groups[key].push(trade);
+
+    });
+
+
+    Object.keys(groups)
+        .forEach(dateKey => {
+
+
+        const heading =
+            document.createElement("div");
+
+
+        heading.className =
+            "date-heading";
+
+
+        heading.textContent =
+            dateKey;
+
+
+        container.appendChild(
+            heading
+        );
+
+
+        groups[dateKey].forEach(
+            trade => {
+
+                createTransaction(
+                    trade,
+                    container
+                );
+
+            }
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   CREATE TRANSACTION
+===================================================== */
+
+function createTransaction(
+    trade,
+    container
+){
+
+    const item =
+        document.createElement("div");
+
+
+    item.className =
+        "transaction-item";
+
+
+    const type =
+        String(
+            trade.type || "BUY"
+        ).toUpperCase();
+
+
+    const isBuy =
+        type === "BUY";
+
+
+    const profit =
+        Number(trade.profit) || 0;
+
+
+    const profitClass =
+        profit < 0
+            ? "color-red"
+            : profit > 0
+                ? "color-blue"
+                : "color-black";
+
+
+    const typeClass =
+        isBuy ? "buy" : "sell";
+
+
+    const sign =
+        profit > 0 ? "+" : "";
+
+
+    const symbol =
+        trade.symbol ||
+        "XAUUSD.mic";
+
+
+    const volume =
+        Number(
+            trade.volume || 0.01
+        ).toFixed(2);
+
+
+    const openPrice =
+        Number(
+            trade.openPrice ??
+            trade.price ??
+            0
+        );
+
+
+    const closePrice =
+        Number(
+            trade.closePrice ??
+            trade.currentPrice ??
+            0
+        );
+
+
+    const closeTime =
+        formatDate(
+            trade.closeTime
+        );
+
+
+    item.innerHTML = `
+
+        <div class="transaction-top">
+
+            <div class="transaction-info">
+
+                <div class="transaction-symbol">
+
+                    ${symbol},
+
+                    <span class="${typeClass}">
+                        ${type.toLowerCase()}
+                        ${volume}
+                    </span>
+
+                </div>
+
+
+                <div class="transaction-prices">
+
+                    ${openPrice.toFixed(2)}
+
+                    <span>→</span>
+
+                    ${closePrice.toFixed(2)}
+
+                </div>
+
+            </div>
+
+
+            <div class="transaction-right">
+
+                <div class="transaction-date">
+                    ${closeTime}
+                </div>
+
+                <div class="transaction-profit ${profitClass}">
+                    ${sign}${money(profit)}
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    /*
+       Clicking a history transaction shows
+       its details.
+    */
+
+    item.onclick = function(){
+
+        alert(
+
+            "Ticket: " +
+            (trade.ticket || trade.id) +
+
+            "\n\nSymbol: " +
+            symbol +
+
+            "\nType: " +
+            type +
+
+            "\nVolume: " +
+            volume +
+
+            "\nOpen price: " +
+            openPrice.toFixed(2) +
+
+            "\nClose price: " +
+            closePrice.toFixed(2) +
+
+            "\nProfit: " +
+            sign + money(profit)
+
+        );
+
+    };
+
+
+    container.appendChild(item);
+
+}
+
+
+/* =====================================================
+   TABS
+===================================================== */
+
+function setTab(element,type){
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(tab => {
+
+            tab.classList.remove("active");
+
+        });
+
+
+    element.classList.add("active");
+
+
+    /*
+       Positions currently displays the closed
+       trading history.
+
+       Orders and Deals can be connected later
+       to separate localStorage collections.
+    */
+
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+function toggleSidebar(){
+
+    document
+        .getElementById("sidebar")
+        .classList.toggle("open");
+
+
+    document
+        .getElementById("overlay")
+        .classList.toggle("active");
+
+}
+
+
+/* =====================================================
+   LIVE SYNC
+===================================================== */
+
+window.addEventListener(
+    "storage",
+    function(event){
+
+        if(
+
+            event.key === "closedTrades" ||
+
+            event.key === "historyTrades" ||
+
+            event.key === "balance" ||
+
+            event.key === "tradeUpdate"
+
+        ){
+
+            loadHistory();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   PAGE SHOW
+===================================================== */
+
+window.addEventListener(
+    "pageshow",
+    function(){
+
+        loadHistory();
+
+    }
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadHistory();
+
+</script>
+
+</body>
+  </html>

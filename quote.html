@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0,user-scalable=no">
+
+<title>MetaQuotes Quotes</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:-apple-system,BlinkMacSystemFont,
+    "Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    margin:0;
+    background:#fff;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* =====================================================
+   APP
+   ===================================================== */
+
+.app-container{
+    width:100%;
+    max-width:400px;
+    height:100vh;
+    max-height:850px;
+    background:#fff;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    position:relative;
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.header{
+    height:58px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 18px;
+    background:#fff;
+    border-bottom:1px solid #eeeeee;
+}
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.menu-icon{
+    font-size:24px;
+    color:#333;
+    cursor:pointer;
+    width:25px;
+}
+
+.header-title{
+    font-size:20px;
+    font-weight:500;
+    color:#000;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    font-size:24px;
+    color:#555;
+}
+
+.header-right span{
+    cursor:pointer;
+}
+
+
+/* =====================================================
+   QUOTES
+   ===================================================== */
+
+.quotes-list{
+    flex:1;
+    overflow-y:auto;
+    padding-bottom:8px;
+    scrollbar-width:none;
+}
+
+.quotes-list::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* =====================================================
+   QUOTE ITEM
+   ===================================================== */
+
+.quote-item{
+    display:flex;
+    flex-direction:column;
+    padding:12px 20px;
+    border-bottom:1px solid #eeeeee;
+    cursor:pointer;
+    transition:background .15s;
+}
+
+.quote-item:active{
+    background:#f2f2f2;
+}
+
+
+/* TOP */
+
+.quote-top-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:3px;
+}
+
+.quote-change{
+    display:flex;
+    gap:6px;
+    font-size:13px;
+    font-weight:600;
+    min-width:100px;
+}
+
+.quote-prices{
+    display:flex;
+    gap:18px;
+    font-size:17px;
+    font-weight:600;
+    text-align:right;
+    min-width:170px;
+    justify-content:flex-end;
+}
+
+.price-val{
+    position:relative;
+    letter-spacing:-.3px;
+    transition:color .2s;
+}
+
+.price-val sup{
+    font-size:9px;
+    font-weight:600;
+    position:relative;
+    top:-.45em;
+    margin-left:0;
+}
+
+
+/* BOTTOM */
+
+.quote-bottom-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.quote-symbol{
+    font-size:15px;
+    font-weight:600;
+    color:#333;
+    width:100px;
+}
+
+.quote-details{
+    display:flex;
+    gap:15px;
+    font-size:10px;
+    color:#888;
+    text-align:right;
+    min-width:175px;
+    justify-content:flex-end;
+    white-space:nowrap;
+}
+
+.quote-details span{
+    display:inline-block;
+}
+
+
+/* =====================================================
+   MT5-LIKE COLOURS
+   ===================================================== */
+
+.color-red{
+    color:#e53935;
+}
+
+.color-blue{
+    color:#1976d2;
+}
+
+.color-gray{
+    color:#777;
+}
+
+.price-up{
+    color:#1976d2 !important;
+}
+
+.price-down{
+    color:#e53935 !important;
+}
+
+.price-neutral{
+    color:#1976d2;
+}
+
+
+/* =====================================================
+   BOTTOM NAV
+   ===================================================== */
+
+.bottom-nav{
+    height:72px;
+    flex-shrink:0;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    background:#fff;
+    border-top:1px solid #e0e0e0;
+    padding:7px 0 10px;
+}
+
+.nav-item{
+    height:58px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:#777;
+    font-size:10px;
+    gap:3px;
+    position:relative;
+}
+
+.nav-item.active{
+    color:#2196f3;
+}
+
+.nav-icon{
+    font-size:20px;
+    font-weight:300;
+    margin-bottom:1px;
+}
+
+.nav-pill{
+    background:#e0e0e0;
+    border-radius:12px;
+    padding:4px 10px;
+    min-width:52px;
+    text-align:center;
+    font-size:12px;
+    font-weight:600;
+    color:#000;
+}
+
+
+/* =====================================================
+   SIDE MENU
+   ===================================================== */
+
+.side-menu{
+    position:absolute;
+    top:0;
+    left:-280px;
+    width:270px;
+    height:100%;
+    background:#fff;
+    z-index:100;
+    box-shadow:4px 0 15px rgba(0,0,0,.2);
+    transition:left .25s ease;
+}
+
+.side-menu.open{
+    left:0;
+}
+
+.side-header{
+    padding:22px 20px;
+    border-bottom:1px solid #eee;
+    font-weight:600;
+}
+
+.side-link{
+    padding:16px 20px;
+    border-bottom:1px solid #eee;
+    font-size:14px;
+    cursor:pointer;
+}
+
+.side-link:active{
+    background:#f5f5f5;
+}
+
+.menu-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.35);
+    z-index:90;
+    display:none;
+}
+
+.menu-overlay.active{
+    display:block;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app-container">
+
+
+<!-- =====================================================
+     SIDE MENU
+     ===================================================== -->
+
+<div class="side-menu" id="sideMenu">
+
+    <div class="side-header">
+        VaultMarkets-Live
+    </div>
+
+    <div class="side-link"
+         onclick="location.href='index.html'">
+        Trade
+    </div>
+
+    <div class="side-link"
+         onclick="location.href='quotes.html'">
+        Quotes
+    </div>
+
+    <div class="side-link"
+         onclick="location.href='massage.html'">
+        Messages
+    </div>
+
+    <div class="side-link"
+         onclick="location.href='history.html'">
+        History
+    </div>
+
+</div>
+
+<div class="menu-overlay"
+     id="menuOverlay"
+     onclick="toggleMenu()">
+</div>
+
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
+<header class="header">
+
+    <div class="header-left">
+
+        <div class="menu-icon"
+             onclick="toggleMenu()">
+            &#9776;
+        </div>
+
+        <h1 class="header-title">
+            Quotes
+        </h1>
+
+    </div>
+
+    <div class="header-right">
+
+        <span onclick="addSymbol()">+</span>
+
+        <span onclick="editSymbols()">✎</span>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     QUOTES LIST
+     ===================================================== -->
+
+<main class="quotes-list"
+      id="quotesList">
+
+
+    <!-- XAUUSD -->
+
+    <div class="quote-item"
+         data-symbol="XAUUSD.mic"
+         onclick="goToChart('XAUUSD.mic')">
+
+        <div class="quote-top-row">
+
+            <div class="quote-change"
+                 id="change-XAUUSD">
+                <span>0</span>
+                <span>0.00%</span>
+            </div>
+
+            <div class="quote-prices">
+
+                <span class="price-val"
+                      id="bid-XAUUSD">
+                    4134.57
+                </span>
+
+                <span class="price-val"
+                      id="ask-XAUUSD">
+                    4134.77
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="quote-bottom-row">
+
+            <div class="quote-symbol">
+                XAUUSD.mic
+            </div>
+
+            <div class="quote-details">
+
+                <span id="time-XAUUSD">
+                    01:08:10
+                </span>
+
+                <span id="tick-XAUUSD">
+                    20
+                </span>
+
+                <span id="low-XAUUSD">
+                    L: 4133.17
+                </span>
+
+                <span id="high-XAUUSD">
+                    H: 4141.84
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- DE30 -->
+
+    <div class="quote-item"
+         data-symbol=".DE30.mic"
+         onclick="goToChart('.DE30.mic')">
+
+        <div class="quote-top-row">
+
+            <div class="quote-change"
+                 id="change-DE30">
+                <span>+538</span>
+                <span>0.02%</span>
+            </div>
+
+            <div class="quote-prices">
+
+                <span class="price-val"
+                      id="bid-DE30">
+                    25311.57
+                </span>
+
+                <span class="price-val"
+                      id="ask-DE30">
+                    25313.17
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="quote-bottom-row">
+
+            <div class="quote-symbol">
+                .DE30.mic
+            </div>
+
+            <div class="quote-details">
+
+                <span id="time-DE30">01:08:02</span>
+                <span id="tick-DE30">160</span>
+                <span id="low-DE30">L: 25302.57</span>
+                <span id="high-DE30">H: 25333.57</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- USTECH -->
+
+    <div class="quote-item"
+         data-symbol=".USTECH.mic"
+         onclick="goToChart('.USTECH.mic')">
+
+        <div class="quote-top-row">
+
+            <div class="quote-change"
+                 id="change-USTECH">
+
+                <span>+3141</span>
+                <span>0.10%</span>
+
+            </div>
+
+            <div class="quote-prices">
+
+                <span class="price-val"
+                      id="bid-USTECH">
+                    31110.41
+                </span>
+
+                <span class="price-val"
+                      id="ask-USTECH">
+                    31112.21
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="quote-bottom-row">
+
+            <div class="quote-symbol">
+                .USTECH.mic
+            </div>
+
+            <div class="quote-details">
+
+                <span id="time-USTECH">
+                    01:08:10
+                </span>
+
+                <span id="tick-USTECH">
+                    180
+                </span>
+
+                <span id="low-USTECH">
+                    L: 31077.39
+                </span>
+
+                <span id="high-USTECH">
+                    H: 31115.58
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- US30 -->
+
+    <div class="quote-item"
+         data-symbol=".US30.mic"
+         onclick="goToChart('.US30.mic')">
+
+        <div class="quote-top-row">
+
+            <div class="quote-change"
+                 id="change-US30">
+
+                <span>-562</span>
+                <span>-0.01%</span>
+
+            </div>
+
+            <div class="quote-prices">
+
+                <span class="price-val"
+                      id="bid-US30">
+                    51299.53
+                </span>
+
+                <span class="price-val"
+                      id="ask-US30">
+                    51302.73
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="quote-bottom-row">
+
+            <div class="quote-symbol">
+                .US30.mic
+            </div>
+
+            <div class="quote-details">
+
+                <span id="time-US30">
+                    01:08:10
+                </span>
+
+                <span id="tick-US30">
+                    320
+                </span>
+
+                <span id="low-US30">
+                    L: 51293.13
+                </span>
+
+                <span id="high-US30">
+                    H: 51332.33
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- XAGUSD -->
+
+    <div class="quote-item"
+         data-symbol="XAGUSD.mic"
+         onclick="goToChart('XAGUSD.mic')">
+
+        <div class="quote-top-row">
+
+            <div class="quote-change"
+                 id="change-XAGUSD">
+
+                <span>-193</span>
+                <span>-0.32%</span>
+
+            </div>
+
+            <div class="quote-prices">
+
+                <span class="price-val"
+                      id="bid-XAGUSD">
+                    60.874
+                </span>
+
+                <span class="price-val"
+                      id="ask-XAGUSD">
+                    60.939
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="quote-bottom-row">
+
+            <div class="quote-symbol">
+                XAGUSD.mic
+            </div>
+
+            <div class="quote-details">
+
+                <span id="time-XAGUSD">
+                    01:08:10
+                </span>
+
+                <span id="tick-XAGUSD">
+                    65
+                </span>
+
+                <span id="low-XAGUSD">
+                    L: 60.852
+                </span>
+
+                <span id="high-XAGUSD">
+                    H: 61.074
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- USDZAR MIC -->
+
+    <div class="quote-item"
+         data-symbol="USDZAR.mic"
+         onclick="goToChart('USDZAR.mic')">
+
+        <div class="quote-top-row">
+
+            <div class="quote-change"
+                 id="change-USDZARmic">
+
+                <span>+338</span>
+                <span>0.02%</span>
+
+            </div>
+
+            <div class="quote-prices">
+
+                <span class="price-val"
+                      id="bid-USDZARmic">
+                    16.64792
+                </span>
+
+                <span class="price-val"
+                      id="ask-USDZARmic">
+                    16.65049
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="quote-bottom-row">
+
+            <div class="quote-symbol">
+                USDZAR.mic
+            </div>
+
+            <div class="quote-details">
+
+                <span id="time-USDZARmic">
+                    01:08:09
+                </span>
+
+                <span id="tick-USDZARmic">
+                    257
+                </span>
+
+                <span id="low-USDZARmic">
+                    L: 16.63377
+                </span>
+
+                <span id="high-USDZARmic">
+                    H: 16.65576
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- USDZAR -->
+
+    <div class="quote-item"
+         data-symbol="USDZAR"
+         onclick="goToChart('USDZAR')">
+
+        <div class="quote-top-row">
+
+            <div class="quote-change"
+                 id="change-USDZAR">
+
+                <span>+338</span>
+                <span>0.02%</span>
+
+            </div>
+
+            <div class="quote-prices">
+
+                <span class="price-val"
+                      id="bid-USDZAR">
+                    16.64815
+                </span>
+
+                <span class="price-val"
+                      id="ask-USDZAR">
+                    16.65027
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="quote-bottom-row">
+
+            <div class="quote-symbol">
+                USDZAR
+            </div>
+
+            <div class="quote-details">
+
+                <span id="time-USDZAR">
+                    01:08:09
+                </span>
+
+                <span id="tick-USDZAR">
+                    212
+                </span>
+
+                <span id="low-USDZAR">
+                    L: 16.63400
+                </span>
+
+                <span id="high-USDZAR">
+                    H: 16.65599
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- EURUSD -->
+
+    <div class="quote-item"
+         data-symbol="EURUSD.mic"
+         onclick="goToChart('EURUSD.mic')">
+
+        <div class="quote-top-row">
+
+            <div class="quote-change"
+                 id="change-EURUSD">
+
+                <span>-50</span>
+                <span>-0.04%</span>
+
+            </div>
+
+            <div class="quote-prices">
+
+                <span class="price-val"
+                      id="bid-EURUSD">
+                    1.12121
+                </span>
+
+                <span class="price-val"
+                      id="ask-EURUSD">
+                    1.12182
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="quote-bottom-row">
+
+            <div class="quote-symbol">
+                EURUSD.mic
+            </div>
+
+            <div class="quote-details">
+
+                <span id="time-EURUSD">
+                    01:08:08
+                </span>
+
+                <span id="tick-EURUSD">
+                    61
+                </span>
+
+                <span id="low-EURUSD">
+                    L: 1.12104
+                </span>
+
+                <span id="high-EURUSD">
+                    H: 1.12186
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- GBPUSD -->
+
+    <div class="quote-item"
+         data-symbol="GBPUSD.mic"
+         onclick="goToChart('GBPUSD.mic')">
+
+        <div class="quote-top-row">
+
+            <div class="quote-change"
+                 id="change-GBPUSD">
+
+                <span>-36</span>
+                <span>-0.03%</span>
+
+            </div>
+
+            <div class="quote-prices">
+
+                <span class="price-val"
+                      id="bid-GBPUSD">
+                    1.32146
+                </span>
+
+                <span class="price-val"
+                      id="ask-GBPUSD">
+                    1.32209
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="quote-bottom-row">
+
+            <div class="quote-symbol">
+                GBPUSD.mic
+            </div>
+
+            <div class="quote-details">
+
+                <span id="time-GBPUSD">
+                    01:08:08
+                </span>
+
+                <span id="tick-GBPUSD">
+                    63
+                </span>
+
+                <span id="low-GBPUSD">
+                    L: 1.32130
+                </span>
+
+                <span id="high-GBPUSD">
+                    H: 1.32211
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     BOTTOM NAV
+     ===================================================== -->
+
+<nav class="bottom-nav">
+
+    <a href="quotes.html"
+       class="nav-item active">
+
+        <div class="nav-icon">
+            ⇅
+        </div>
+
+        <span>Quotes</span>
+
+    </a>
+
+
+    <a href="index.html"
+       class="nav-item">
+
+        <div class="nav-icon">
+            ▦
+        </div>
+
+        <span>Charts</span>
+
+    </a>
+
+
+    <a href="index.html"
+       class="nav-item">
+
+        <div class="nav-pill"
+             id="navBalance">
+            1000.00
+        </div>
+
+    </a>
+
+
+    <a href="history.html"
+       class="nav-item">
+
+        <div class="nav-icon">
+            ↶
+        </div>
+
+        <span>History</span>
+
+    </a>
+
+
+    <a href="massage.html"
+       class="nav-item">
+
+        <div class="nav-icon">
+            💬
+        </div>
+
+        <span>Messages</span>
+
+    </a>
+
+</nav>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   ACCOUNT DATA
+   ===================================================== */
+
+function updateMoney(){
+
+    let balance =
+        parseFloat(
+            localStorage.getItem("balance")
+        );
+
+    let credit =
+        parseFloat(
+            localStorage.getItem("credit")
+        );
+
+    if(isNaN(balance)){
+        balance = 500;
+        localStorage.setItem(
+            "balance",
+            balance.toFixed(2)
+        );
+    }
+
+    if(isNaN(credit)){
+        credit = 500;
+        localStorage.setItem(
+            "credit",
+            credit.toFixed(2)
+        );
+    }
+
+    const equity =
+        balance + credit;
+
+    document.getElementById(
+        "navBalance"
+    ).textContent =
+        equity.toFixed(2);
+}
+
+
+/* =====================================================
+   SYMBOL DATA
+   ===================================================== */
+
+const symbols = {
+
+    "XAUUSD.mic":{
+        price:4134.67,
+        spread:.20,
+        digits:2,
+        base:4134.67,
+        high:4141.84,
+        low:4133.17
+    },
+
+    ".DE30.mic":{
+        price:25312.37,
+        spread:1.60,
+        digits:2,
+        base:25312.37,
+        high:25333.57,
+        low:25302.57
+    },
+
+    ".USTECH.mic":{
+        price:31111.31,
+        spread:1.80,
+        digits:2,
+        base:31111.31,
+        high:31115.58,
+        low:31077.39
+    },
+
+    ".US30.mic":{
+        price:51301.13,
+        spread:3.20,
+        digits:2,
+        base:51301.13,
+        high:51332.33,
+        low:51293.13
+    },
+
+    "XAGUSD.mic":{
+        price:60.90,
+        spread:.06,
+        digits:3,
+        base:60.90,
+        high:61.074,
+        low:60.852
+    },
+
+    "USDZAR.mic":{
+        price:16.64920,
+        spread:.0025,
+        digits:5,
+        base:16.64920,
+        high:16.65576,
+        low:16.63377
+    },
+
+    "USDZAR":{
+        price:16.64918,
+        spread:.0021,
+        digits:5,
+        base:16.64918,
+        high:16.65599,
+        low:16.63400
+    },
+
+    "EURUSD.mic":{
+        price:1.12150,
+        spread:.00061,
+        digits:5,
+        base:1.12150,
+        high:1.12186,
+        low:1.12104
+    },
+
+    "GBPUSD.mic":{
+        price:1.32177,
+        spread:.00063,
+        digits:5,
+        base:1.32177,
+        high:1.32211,
+        low:1.32130
+    }
+
+};
+
+
+/* =====================================================
+   PREVIOUS PRICES
+   ===================================================== */
+
+const previousPrices = {};
+
+
+/* =====================================================
+   RANDOM MOVEMENT
+   ===================================================== */
+
+function moveSymbol(symbol,data){
+
+    const previous =
+        data.price;
+
+    let movement;
+
+    /*
+       XAUUSD gets slightly more visible movement.
+    */
+
+    if(symbol === "XAUUSD.mic"){
+
+        movement =
+            (Math.random()-.5)*1.1;
+
+    }else{
+
+        movement =
+            (Math.random()-.5) *
+            Math.max(
+                data.price * 0.00015,
+                0.00001
+            );
+
+    }
+
+    data.price += movement;
+
+    /*
+       Keep prices sensible.
+    */
+
+    if(data.price <= 0){
+
+        data.price =
+            previous;
+
+    }
+
+    /*
+       Update daily high/low.
+    */
+
+    if(data.price > data.high){
+
+        data.high =
+            data.price;
+
+    }
+
+    if(data.price < data.low){
+
+        data.low =
+            data.price;
+
+    }
+
+    previousPrices[symbol] =
+        previous;
+
+}
+
+
+/* =====================================================
+   FORMAT PRICE
+   ===================================================== */
+
+function formatPrice(data,value){
+
+    return Number(value)
+        .toFixed(data.digits);
+
+}
+
+
+/* =====================================================
+   UPDATE QUOTE
+   ===================================================== */
+
+function updateQuote(symbol){
+
+    const data =
+        symbols[symbol];
+
+    if(!data) return;
+
+
+    moveSymbol(
+        symbol,
+        data
+    );
+
+
+    let bid =
+        data.price -
+        data.spread/2;
+
+    let ask =
+        data.price +
+        data.spread/2;
+
+
+    /*
+       XAUUSD chart price sharing.
+    */
+
+    if(symbol === "XAUUSD.mic"){
+
+        localStorage.setItem(
+            "XAUUSD_price",
+            data.price.toFixed(2)
+        );
+
+    }
+
+
+    const key =
+        symbol
+        .replace(/\./g,"")
+        .replace(/\./g,"")
+        .replace(/mic/g,"mic");
+
+
+    const safeKey =
+        symbol === "XAUUSD.mic"
+            ? "XAUUSD"
+            : symbol === ".DE30.mic"
+            ? "DE30"
+            : symbol === ".USTECH.mic"
+            ? "USTECH"
+            : symbol === ".US30.mic"
+            ? "US30"
+            : symbol === "XAGUSD.mic"
+            ? "XAGUSD"
+            : symbol === "USDZAR.mic"
+            ? "USDZARmic"
+            : symbol === "USDZAR"
+            ? "USDZAR"
+            : symbol === "EURUSD.mic"
+            ? "EURUSD"
+            : "GBPUSD";
+
+
+    const bidEl =
+        document.getElementById(
+            "bid-" + safeKey
+        );
+
+    const askEl =
+        document.getElementById(
+            "ask-" + safeKey
+        );
+
+    const changeEl =
+        document.getElementById(
+            "change-" + safeKey
+        );
+
+    const lowEl =
+        document.getElementById(
+            "low-" + safeKey
+        );
+
+    const highEl =
+        document.getElementById(
+            "high-" + safeKey
+        );
+
+    const tickEl =
+        document.getElementById(
+            "tick-" + safeKey
+        );
+
+    const timeEl =
+        document.getElementById(
+            "time-" + safeKey
+        );
+
+
+    if(!bidEl || !askEl) return;
+
+
+    /* PRICES */
+
+    bidEl.textContent =
+        formatPrice(
+            data,
+            bid
+        );
+
+    askEl.textContent =
+        formatPrice(
+            data,
+            ask
+        );
+
+
+    /* COLOUR */
+
+    if(
+        previousPrices[symbol] !== undefined
+    ){
+
+        if(
+            data.price >
+            previousPrices[symbol]
+        ){
+
+            bidEl.className =
+                "price-val price-up";
+
+            askEl.className =
+                "price-val price-up";
+
+        }
+        else if(
+            data.price <
+            previousPrices[symbol]
+        ){
+
+            bidEl.className =
+                "price-val price-down";
+
+            askEl.className =
+                "price-val price-down";
+
+        }
+
+    }
+
+
+    /* CHANGE */
+
+    const difference =
+        data.price -
+        data.base;
+
+    const percent =
+        data.base !== 0
+            ? (difference /
+               data.base) * 100
+            : 0;
+
+
+    const changeNumber =
+        Math.round(
+            difference * 100
+        );
+
+
+    const sign =
+        difference >= 0
+            ? "+"
+            : "";
+
+
+    if(changeEl){
+
+        changeEl.innerHTML = `
+
+            <span>
+                ${sign}${changeNumber}
+            </span>
+
+            <span>
+                ${sign}${percent.toFixed(2)}%
+            </span>
+
+        `;
+
+        changeEl.className =
+            "quote-change " +
+            (
+                difference >= 0
+                    ? "color-blue"
+                    : "color-red"
+            );
+
+    }
+
+
+    /* HIGH / LOW */
+
+    if(lowEl){
+
+        lowEl.textContent =
+            "L: " +
+            formatPrice(
+                data,
+                data.low
+            );
+
+    }
+
+    if(highEl){
+
+        highEl.textContent =
+            "H: " +
+            formatPrice(
+                data,
+                data.high
+            );
+
+    }
+
+
+    /* TICK COUNT */
+
+    if(tickEl){
+
+        const oldTick =
+            parseInt(
+                tickEl.textContent
+            ) || 0;
+
+        const tickChange =
+            Math.floor(
+                Math.random()*25
+            ) + 1;
+
+        tickEl.textContent =
+            oldTick +
+            tickChange;
+
+    }
+
+
+    /* TIME */
+
+    if(timeEl){
+
+        timeEl.textContent =
+            new Date()
+            .toLocaleTimeString(
+                [],
+                {
+                    hour:"2-digit",
+                    minute:"2-digit",
+                    second:"2-digit"
+                }
+            );
+
+    }
+
+}
+
+
+/* =====================================================
+   UPDATE ALL QUOTES
+   ===================================================== */
+
+function updateAllQuotes(){
+
+    Object.keys(symbols)
+        .forEach(
+            updateQuote
+        );
+
+    updateMoney();
+
+}
+
+
+/* =====================================================
+   OPEN CHART
+   ===================================================== */
+
+function goToChart(symbol){
+
+    localStorage.setItem(
+        "selectedSymbol",
+        symbol
+    );
+
+    location.href =
+        "index.html";
+}
+
+
+/* =====================================================
+   MENU
+   ===================================================== */
+
+function toggleMenu(){
+
+    document.getElementById(
+        "sideMenu"
+    ).classList.toggle("open");
+
+    document.getElementById(
+        "menuOverlay"
+    ).classList.toggle("active");
+
+}
+
+
+/* =====================================================
+   HEADER BUTTONS
+   ===================================================== */
+
+function addSymbol(){
+
+    alert(
+        "Symbol list"
+    );
+
+}
+
+function editSymbols(){
+
+    alert(
+        "Edit symbols"
+    );
+
+}
+
+
+/* =====================================================
+   STORAGE SYNC
+   ===================================================== */
+
+window.addEventListener(
+    "storage",
+    function(event){
+
+        if(
+            event.key === "balance" ||
+            event.key === "credit" ||
+            event.key === "XAUUSD_price"
+        ){
+
+            updateMoney();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   START
+   ===================================================== */
+
+updateMoney();
+
+updateAllQuotes();
+
+
+/*
+   MT5-LIKE LIVE QUOTES.
+   Numbers change continuously.
+*/
+
+setInterval(
+    updateAllQuotes,
+    700
+);
+
+
+/*
+   Keep account display current.
+*/
+
+setInterval(
+    updateMoney,
+    500
+);
+
+</script>
+
+</body>
+  </html>
